@@ -46,7 +46,7 @@ whose **variance-preserving (VP)** and **variance-exploding (VE)** forms recover
  
 $$\mathbb{E}[x_0 \mid x_t] = x_t + \sigma^2 \nabla_{x_t}\log p_t(x_t) \quad\Longrightarrow\quad \nabla_{x_t}\log p_t(x_t) = \frac{D(x_t;\sigma) - x_t}{\sigma^2},$$
  
-so a network trained to denoise *is* a score model. (This same identity is what [ambient](#references) and [consistent-Tweedie](#references) diffusion exploit to learn from corrupted data — directly relevant to the noisy-training question here.)
+so a network trained to denoise *is* a score model. (This same identity is what [ambient](#references) and [consistent-Tweedie](#references) diffusion exploit to learn from corrupted data, directly relevant to the noisy-training question we're looking at.)
  
 **EDM preconditioning.** Rather than predict noise directly, EDM wraps the raw network $F_\theta$ in $\sigma$-dependent scalings so the effective input/target are unit-variance across all noise levels:
  
