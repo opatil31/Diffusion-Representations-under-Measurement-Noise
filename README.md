@@ -31,31 +31,35 @@ This extends my first-author work on **noise shortcuts in self-supervised learni
 ---
 
 ## Theoretical background
-
+ 
 **Forward process as a Markov chain.** DDPM defines a forward Markov chain that gradually adds Gaussian noise,
-
+ 
 $$q(x_t \mid x_{t-1}) = \mathcal{N}\!\left(\sqrt{1-\beta_t}\,x_{t-1},\,\beta_t I\right), \qquad q(x_t \mid x_0) = \mathcal{N}\!\left(\sqrt{\bar\alpha_t}\,x_0,\,(1-\bar\alpha_t) I\right),$$
-
+ 
 with $\bar\alpha_t = \prod_{s\le t}(1-\beta_s)$. In the continuous limit this is a stochastic differential equation ([Song et al., 2021](#references)),
-
+ 
 $$dx = f(x,t)\,dt + g(t)\,dw,$$
-
+ 
 whose **variance-preserving (VP)** and **variance-exploding (VE)** forms recover DDPM and score-matching respectively. EDM works in the VE parameterization $x_t = x_0 + \sigma_t\,\varepsilon$, $\varepsilon\sim\mathcal N(0,I)$, treating the noise level $\sigma$ as the time variable.
-
+ 
 **Score, denoiser, and Tweedie's formula.** Sampling runs the *reverse* SDE, which requires the score $\nabla_{x}\log p_t(x)$. For the VE Gaussian perturbation, Tweedie's formula links the score to the conditional mean (the optimal denoiser):
-
+ 
 $$\mathbb{E}[x_0 \mid x_t] = x_t + \sigma^2 \nabla_{x_t}\log p_t(x_t) \quad\Longrightarrow\quad \nabla_{x_t}\log p_t(x_t) = \frac{D(x_t;\sigma) - x_t}{\sigma^2},$$
-
+ 
 so a network trained to denoise *is* a score model. (This same identity is what [ambient](#references) and [consistent-Tweedie](#references) diffusion exploit to learn from corrupted data — directly relevant to the noisy-training question here.)
-
+ 
 **EDM preconditioning.** Rather than predict noise directly, EDM wraps the raw network $F_\theta$ in $\sigma$-dependent scalings so the effective input/target are unit-variance across all noise levels:
-
+ 
 $$D_\theta(x;\sigma) = c_\text{skip}(\sigma)\,x + c_\text{out}(\sigma)\,F_\theta\!\big(c_\text{in}(\sigma)\,x,\;c_\text{noise}(\sigma)\big),$$
-
+ 
 $$c_\text{skip}=\frac{\sigma_d^2}{\sigma^2+\sigma_d^2},\quad c_\text{out}=\frac{\sigma\,\sigma_d}{\sqrt{\sigma^2+\sigma_d^2}},\quad c_\text{in}=\frac{1}{\sqrt{\sigma^2+\sigma_d^2}},\quad c_\text{noise}=\tfrac14\ln\sigma,$$
-
-trained with the weighted denoising loss $\;\mathbb{E}_{\sigma,x_0,\varepsilon}\big[\lambda(\sigma)\,\lVert D_\theta(x_0+\sigma\varepsilon;\sigma)-x_0\rVert^2\big]$, where $\lambda(\sigma)=(\sigma^2+\sigma_d^2)/(\sigma\sigma_d)^2$, $\ln\sigma\sim\mathcal N(P_\text{mean}{=}{-}1.2,\,P_\text{std}{=}1.2)$, and $\sigma_d=0.5$.
-
+ 
+trained with the weighted denoising loss
+ 
+$$\mathcal{L} = \mathbb{E}_{\sigma,\,x_0,\,\varepsilon}\!\left[\lambda(\sigma)\,\big\lVert D_\theta(x_0+\sigma\varepsilon;\,\sigma)-x_0\big\rVert^2\right], \qquad \lambda(\sigma)=\frac{\sigma^2+\sigma_d^2}{(\sigma\sigma_d)^2}.$$
+ 
+The noise level is sampled log-normally, $\ln\sigma \sim \mathcal{N}(P_{\text{mean}} = -1.2,\ P_{\text{std}} = 1.2)$, with data scale $\sigma_d = 0.5$.
+ 
 **Why intrinsic data noise is a problem.** All of the above assumes $x_0$ is clean. If the training data is itself a noisy measurement $\tilde x_0 = x_0 + n$, the denoiser is rewarded for reconstructing $n$, the score estimate is biased, and the low-noise representation band (where clean diffusion features are best) is exactly where the intrinsic noise dominates. That is the regime this project probes empirically.
 
 ---
