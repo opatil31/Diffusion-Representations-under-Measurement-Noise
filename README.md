@@ -132,9 +132,6 @@ python src/e1_data.py
 # 3. train + probe
 python src/train_probe_e1_edm.py --dataset cifar10 --edm_repo ./edm \
     --duration_mimg 50 --out_dir ./e1_runs_edm
-
-# 4. figures
-python src/make_figures.py --results ./e1_runs_edm/e1_results_edm_cifar10.json --out_dir ./figs
 ```
 
 Run conditions independently with `--conditions clean,gaussian,...` and sweep magnitude with `--level {0,1,2}`.
@@ -145,11 +142,10 @@ Run conditions independently with `--conditions clean,gaussian,...` and sweep ma
 
 ```
 src/
-  e1_data.py             # matched-variance noise calibration + datasets (+ signature figure)
-  train_probe_e1_edm.py  # EDM-exact training + DDAE-style probing harness (resume/checkpoint)
-  train_probe_e1.py      # self-contained compact-EDM variant (backbone-agnostic probe utils)
-  make_figures.py        # figure generation from the results JSON
-figs/                    # generated figures
+  e1_data.py             # matched-variance noise calibration + datasets
+  train_probe_e1_edm.py  # EDM training + DDAE probing
+  train_probe_e1.py      
+figs/                    
 results/                 # e1_results_edm_cifar10.json
 ```
 
