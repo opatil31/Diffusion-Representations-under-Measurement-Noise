@@ -24,7 +24,7 @@ That property has only ever been studied on **clean** training data. But many of
 This project asks two questions:
 
 1. **(H1)** Does training on intrinsically noisy data degrade the learned representations (probed on clean data)?
-2. **(H2)** At *matched* average noise variance, does the **structure** of the noise (signal-independent vs signal-dependent) change the degradation — i.e., is it magnitude or structure that matters?
+2. **(H2)** At *matched* average noise variance, does the **structure** of the noise (signal-independent vs signal-dependent) change the degradation, i.e., is it magnitude or structure that matters?
 
 This extends my first-author work on **noise shortcuts in self-supervised learning** (SEANA — joint-embedding SSL) into the diffusion / reconstruction-based setting. Recent theory ([Van Assel et al., 2025](#references)) argues reconstruction-style objectives need stronger noise–augmentation alignment than joint-embedding ones under high-magnitude noise, so whether diffusion is more or less robust than SSL here is genuinely pretty open!
 
