@@ -60,7 +60,7 @@ $$\mathcal{L} = \mathbb{E}_{\sigma,\,x_0,\,\varepsilon}\!\left[\lambda(\sigma)\,
  
 The noise level is sampled log-normally, $\ln\sigma \sim \mathcal{N}(P_{\text{mean}} = -1.2,\ P_{\text{std}} = 1.2)$, with data scale $\sigma_d = 0.5$.
  
-**Why intrinsic data noise is a problem.** All of the above assumes $x_0$ is clean. If the training data is itself a noisy measurement $\tilde x_0 = x_0 + n$, the denoiser is rewarded for reconstructing $n$, the score estimate is biased, and the low-noise representation band (where clean diffusion features are best) is exactly where the intrinsic noise dominates. That is the regime this project probes empirically.
+**Why intrinsic data noise is a problem:** All of the above assumes $x_0$ is clean. If the training data is itself a noisy measurement $\tilde x_0 = x_0 + n$, the denoiser is rewarded for reconstructing $n$, the score estimate is biased, and the low-noise representation band (where clean diffusion features are best) is exactly where the intrinsic noise dominates. That is the regime this project probes empirically.
 
 ---
 
@@ -165,6 +165,6 @@ results/                 # e1_results_edm_cifar10.json
 - Daras, Dagan, Dimakis, Daskalakis. *Ambient Diffusion*. NeurIPS 2023. [arXiv:2305.19256]
 - Daras et al. *Consistent Diffusion Meets Tweedie*. ICML 2024. [arXiv:2404.10177]
 - Van Assel et al. *(reconstruction vs joint-embedding under noise)*. NeurIPS 2025. [arXiv:2505.12477]
-- **[Your SEANA citation here]** — first-author work on noise shortcuts in self-supervised representation learning.
+- Patil et al. *Breaking Noise Shortcuts in Self-Supervised Learning*. 2026. My first-author work on noise shortcuts in self-supervised representation learning.
 
 ---
